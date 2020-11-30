@@ -1,8 +1,8 @@
 import {Link} from 'react-router-dom';
 import {media} from 'styled-bootstrap-grid';
 import styled from 'styled-components';
-import {IStyledTheme} from '../GlobalStyle/types';
-import {Button} from '..';
+import {IStyledTheme} from '../../components/GlobalStyle/types';
+import {Button} from '../../components';
 
 export const Root = styled.header`
   display: flex;

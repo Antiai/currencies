@@ -5,6 +5,7 @@ import {IStyledTheme} from '../../components/GlobalStyle/types';
 import ArrowIcon from '../../icons/ArrowIcon';
 
 export const Root = styled.div<IStyledTheme>`
+  margin-top: 21px;
   background-color: ${({theme}) => theme.palette.white};
   border-radius: 20px;
   overflow: hidden;

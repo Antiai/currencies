@@ -3,11 +3,10 @@ import {useSelector} from 'react-redux';
 import { Switch, useHistory, Route, Redirect } from 'react-router-dom';
 import {RootState} from '../../config/store';
 import QuotesList from '../QuotesList';
+import {tabs} from './config';
+import {StyledNavTabs} from './styled.index';
 
-interface IMainProps {
-}
-
-const Main: FC<IMainProps> = (props) => {
+const Main: FC = () => {
   const history = useHistory();
   const {userToken} = useSelector((state: RootState) => state.auth);
 
@@ -18,10 +17,12 @@ const Main: FC<IMainProps> = (props) => {
   }, [history, userToken]);
 
   return (
-    <Switch>
-      <Route path="/quotes" component={QuotesList} />
-      <Redirect exact path="/" to="/quotes" />
-    </Switch>
+    <StyledNavTabs tabs={tabs}>
+      <Switch>
+        <Route path="/quotes" component={QuotesList} />
+        <Redirect exact path="/" to="/quotes" />
+      </Switch>
+    </StyledNavTabs>
   );
 };
 

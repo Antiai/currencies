@@ -1,6 +1,6 @@
 import React, {FC, useCallback} from 'react';
 import {useDispatch} from 'react-redux';
-import {ButtonVariantsEnum} from '../Button/types';
+import {ButtonVariantsEnum} from '../../components/Button/types';
 import {Logo, Root, StyledButton} from './styled.index';
 import { useLocation } from 'react-router-dom';
 import { signOut } from '../../modules/auth';
