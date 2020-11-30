@@ -1,16 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { store } from './app/store';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import {GridThemeProvider} from 'styled-bootstrap-grid';
+import {ThemeProvider} from 'styled-components';
+import GlobalStyle from './components/GlobalStyle';
+import getTheme from './components/Theme';
+import App from './containers/App';
+import { store } from './config/store';
 import * as serviceWorker from './serviceWorker';
+
+const theme = getTheme();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <GridThemeProvider gridTheme={theme.grid}>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <Router>
+            <GlobalStyle theme={theme}/>
+            <App />
+          </Router>
+        </Provider>
+      </ThemeProvider>
+    </GridThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
