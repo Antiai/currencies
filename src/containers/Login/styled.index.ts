@@ -2,7 +2,7 @@ import {media} from 'styled-bootstrap-grid';
 import styled from 'styled-components';
 import {FormField} from '../../components';
 import {IStyledTheme} from '../../components/GlobalStyle/types';
-import ArrowIcon from '../../icons/ArrowIcon';
+import { ArrowIcon } from '../../icons';
 
 export const Root = styled.div<IStyledTheme>`
   margin-top: 21px;

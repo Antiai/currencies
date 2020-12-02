@@ -1,9 +1,12 @@
 import {NavLink} from 'react-router-dom';
+import {media} from 'styled-bootstrap-grid';
 import styled from 'styled-components';
 import {IStyledTheme} from '../GlobalStyle/types';
 
 export const Root = styled.div`
-  min-width: 750px;
+  ${media.md`
+    min-width: 750px;
+  `}
 `;
 
 export const StyledNavLink = styled(NavLink)<IStyledTheme>`
@@ -13,7 +16,7 @@ export const StyledNavLink = styled(NavLink)<IStyledTheme>`
   text-decoration: none;
   display: block;
   margin-right: -1px;
-  width: 180px;
+  width: 120px;
   padding-top: 9px;
   padding-bottom: 12px;
   background-color: ${({theme}) => theme.palette.white};
@@ -22,6 +25,10 @@ export const StyledNavLink = styled(NavLink)<IStyledTheme>`
     background-color 0.2s ease-in-out,
     border-color 0.2s ease-in-out,
     color 0.2s ease-in-out;
+    
+  ${media.md`
+    width: 180px;
+  `}
     
   &:hover,
   &:focus {

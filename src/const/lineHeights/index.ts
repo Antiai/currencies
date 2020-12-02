@@ -20,7 +20,7 @@ const MOBILE_LINE_HEIGHTS: ILineHeights = {
   input: '21.79px',
   tableCell: '24.51px',
   tab: '19.07px',
-  tableHeadCell: '21.79px',
+  tableHeadCell: '19.07px',
   common: '21.79px',
   logo: '27.24px',
   error: '16.34',

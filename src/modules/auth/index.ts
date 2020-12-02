@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {authApi} from '../../api';
 import {AppThunk} from '../../config/store';
 import {IAuthState} from './types';
+import { startLoading, stopLoading } from '../loading';
 
 const initialState: IAuthState = {
   userToken: localStorage.getItem('userToken') as string,
@@ -32,15 +33,21 @@ export const authSlice = createSlice({
 
 export const { signIn, signInSuccess, signInFailure, signOut } = authSlice.actions;
 
-export const authorize = (credentials: { login: string, password: string, }): AppThunk => async dispatch => {
+export const authorize = (credentials: { login: string, password: string }): AppThunk => async dispatch => {
+  dispatch(startLoading());
   dispatch(signIn());
   const {result: userToken, error} = await authApi.signIn(credentials);
 
-  if (error) return dispatch(signInFailure(error));
+  if (error) {
+    dispatch(signInFailure(error));
+    dispatch(stopLoading());
+    return;
+  }
 
   localStorage.setItem('userToken', userToken);
 
   dispatch(signInSuccess(userToken));
+  dispatch(stopLoading());
 };
 
 export default authSlice.reducer;

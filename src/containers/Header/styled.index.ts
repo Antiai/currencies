@@ -29,4 +29,9 @@ export const Logo = styled(Link)<IStyledTheme>`
 
 export const StyledButton = styled(Button)`
   max-width: 130px;
+  padding: 4px 28px 6px;
+  
+  ${media.md`
+    padding: 8px 32px 10px;
+  `}
 `;
