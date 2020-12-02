@@ -6,7 +6,6 @@ export const Root = styled.div<IStyledTheme>`
 `;
 
 export const StyledMain = styled.main`
-  margin-top: 21px;
   display: flex;
 `;
 

@@ -1,8 +1,8 @@
 import {Link} from 'react-router-dom';
 import {media} from 'styled-bootstrap-grid';
 import styled from 'styled-components';
-import {IStyledTheme} from '../GlobalStyle/types';
-import {Button} from '..';
+import {IStyledTheme} from '../../components/GlobalStyle/types';
+import {Button} from '../../components';
 
 export const Root = styled.header`
   display: flex;
@@ -29,4 +29,9 @@ export const Logo = styled(Link)<IStyledTheme>`
 
 export const StyledButton = styled(Button)`
   max-width: 130px;
+  padding: 4px 28px 6px;
+  
+  ${media.md`
+    padding: 8px 32px 10px;
+  `}
 `;

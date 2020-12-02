@@ -10,6 +10,7 @@
     "history": "^5.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-loading-skeleton": "^2.1.1",
     "react-redux": "7.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.1",
@@ -39,7 +40,12 @@
   "eslintConfig": {
     "extends": "react-app",
     "rules": {
-      "max-len": ["warn", { "code": 120 }],
+      "max-len": [
+        "warn",
+        {
+          "code": 120
+        }
+      ],
       "semi": "off",
       "@typescript-eslint/semi": [
         "warn"
@@ -52,8 +58,7 @@
             "requireLast": true
           },
           "singleline": {
-            "delimiter": "comma",
-            "requireLast": true
+            "delimiter": "comma"
           },
           "overrides": {
             "interface": {
