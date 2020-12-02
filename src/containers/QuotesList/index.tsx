@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Table} from '../../components';
-import {RootState} from '../../config/store';
+import {loadingSelector} from '../../modules/loading';
 import {fetchQuotesList, quotesListSelector, addToFavorites, removeFromFavorites} from '../../modules/quotesList';
 import {IQuote} from '../../modules/quotesList/types';
 import {getColumns} from './config';
@@ -9,7 +9,7 @@ import {TableWrap} from './styled.index';
 
 const QuotesList: FC = () => {
   const dispatch = useDispatch();
-  const {isLoading} = useSelector((state: RootState) => state.loading);
+  const {isLoading} = useSelector(loadingSelector);
   const quotesList = useSelector(quotesListSelector);
 
   useEffect(() => {

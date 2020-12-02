@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {RootState} from '../../config/store';
 import {ILoadingState} from './types';
 
 const initialState: ILoadingState = {
@@ -19,5 +20,7 @@ export const loadingSlice = createSlice({
 });
 
 export const { startLoading, stopLoading } = loadingSlice.actions;
+
+export const loadingSelector = (state: RootState) => state.loading;
 
 export default loadingSlice.reducer;

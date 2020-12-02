@@ -5,6 +5,7 @@ import {Button} from '../../components';
 import {RootState} from '../../config/store';
 import {authorize} from '../../modules/auth';
 import {ILoginInput} from '../../modules/auth/types';
+import {loadingSelector} from '../../modules/loading';
 import {
   FormFooter,
   Root,
@@ -14,13 +15,12 @@ import {
   StyledForm,
   Title,
 } from './styled.index';
-import {ILoginProps} from './types';
 
-const Login: FC<ILoginProps> = (props) => {
+const Login: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const {userToken, errors} = useSelector((state: RootState) => state.auth);
-  const {isLoading} = useSelector((state: RootState) => state.loading);
+  const {isLoading} = useSelector(loadingSelector);
   const [formValues, setFormValues] = useState<Partial<ILoginInput>>();
   const [hasErrors, setHasErrors] = useState<boolean>(false);
 
