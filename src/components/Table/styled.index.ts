@@ -3,6 +3,7 @@ import styled, {css} from 'styled-components';
 import {IStyledHeaderCell} from './types';
 
 export const Root = styled.div`
+  position: relative;
   padding-bottom: 50px;
 `;
 
@@ -13,13 +14,20 @@ export const StyledTable = styled.table`
 
 export const StyledHead = styled.thead`
   display: block;
+
+  tr {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+  }
 `;
 
 export const StyledBody = styled.tbody`
   display: block;
   padding-top: 16px;
   height: 350px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const StyledHeaderCell = styled.th<IStyledHeaderCell>`

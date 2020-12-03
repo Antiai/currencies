@@ -63,5 +63,11 @@ export const Container = styled.div<IStyledTheme>`
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: scroll;
+
+  ${media.md`
+    min-width: 750px;
+    overflow-x: hidden;
+  `}
 `;

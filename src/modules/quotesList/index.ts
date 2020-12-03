@@ -12,7 +12,7 @@ const initialState: IQuotesListState = {
 };
 
 export const quotesListSlice = createSlice({
-  name: 'auth',
+  name: 'quotesList',
   initialState,
   reducers: {
     getQuotesList: (state: IQuotesListState) => {

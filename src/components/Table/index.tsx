@@ -1,5 +1,6 @@
 import React, {ReactElement, useMemo} from 'react';
 import Skeleton from 'react-loading-skeleton';
+import Pagination from './components/Pagination';
 import TableRow from './components/TableRow';
 import {
   Root,
@@ -17,6 +18,10 @@ const Table = <RecordType extends IRecord>({
   data,
   rowKey,
   isLoading,
+  withPagination,
+  page,
+  totalPages,
+  onChangePage,
   ...rest
 }: ITableProps<RecordType>): ReactElement<ITableProps<RecordType>> => {
   const headerCells = useMemo(() => columns.map((column, index) => (
@@ -63,8 +68,19 @@ const Table = <RecordType extends IRecord>({
             : rows}
         </StyledBody>
       </StyledTable>
+      {withPagination && (
+        <Pagination
+          page={page ?? 1}
+          totalPages={totalPages ?? 1}
+          onChangePage={onChangePage}
+        />
+      )}
     </Root>
   );
+};
+
+Table.defaultProps = {
+  withPagination: false,
 };
 
 export default Table;

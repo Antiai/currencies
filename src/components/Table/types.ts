@@ -19,6 +19,10 @@ export interface ITableProps<
   data?: RecordType[];
   rowKey?: keyof RecordType;
   isLoading?: boolean;
+  withPagination?: boolean;
+  page?: number;
+  totalPages?: number;
+  onChangePage?: (newPage: number) => void;
 }
 
 export interface IStyledHeaderCell extends IStyledTheme {

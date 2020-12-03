@@ -19,7 +19,6 @@ const TableRow = <RecordType extends IRecord>({
     );
   }), [columns, rowData, rowKey]);
 
-  console.log('render', rowData.asset);
   return (
     <Root {...rest}>
       {cells}
