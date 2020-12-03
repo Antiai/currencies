@@ -22,6 +22,7 @@ const History: FC = () => {
         columns={columns}
         data={historyRecords as IHistoryRecord[]}
         isLoading={isLoading}
+        withPagination
       />
     </TableWrap>
   );

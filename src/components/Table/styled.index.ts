@@ -3,6 +3,7 @@ import styled, {css} from 'styled-components';
 import {IStyledHeaderCell} from './types';
 
 export const Root = styled.div`
+  position: relative;
   padding-bottom: 50px;
 `;
 
