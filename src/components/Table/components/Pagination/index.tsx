@@ -8,7 +8,7 @@ interface IPaginationProps {
   isLoading?: boolean;
   className?: string;
   style?: CSSProperties;
-  onChangePage: (newPage: number) => void;
+  onChangePage?: (newPage: number) => void;
 }
 
 const Pagination: FC<IPaginationProps> = ({
@@ -25,14 +25,14 @@ const Pagination: FC<IPaginationProps> = ({
     const newValue = newPage > 1 ? newPage - 1 : newPage;
     setNewPage(newValue);
 
-    onChangePage(newValue);
+    onChangePage?.(newValue);
   }, [newPage, onChangePage]);
 
   const incrementPage = useCallback(() => {
     const newValue = newPage < totalPages ? newPage + 1 : newPage;
     setNewPage(newValue);
 
-    onChangePage(newValue);
+    onChangePage?.(newValue);
   }, [newPage, onChangePage, totalPages]);
 
   const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ const Pagination: FC<IPaginationProps> = ({
   const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    onChangePage(newPage);
+    onChangePage?.(newPage);
   }, [newPage, onChangePage]);
 
   return (

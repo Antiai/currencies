@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Table} from '../../components';
 import {fetchHistory, historySelector} from '../../modules/history';
@@ -10,19 +10,31 @@ import {TableWrap} from './styled.index';
 const History: FC = () => {
   const dispatch = useDispatch();
   const {isLoading} = useSelector(loadingSelector);
-  const historyRecords = useSelector(historySelector);
+  const {pagesMap, totalPages} = useSelector(historySelector);
+
+  const [page, setPage] = useState<number>(1);
+
+  const historyRecords = useMemo(() => pagesMap.get(page), [page, pagesMap]);
 
   useEffect(() => {
     dispatch(fetchHistory());
   }, [dispatch]);
 
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+  }, [setPage]);
+
   return (
     <TableWrap>
       <Table<IHistoryRecord>
         columns={columns}
+        rowKey="id"
         data={historyRecords as IHistoryRecord[]}
         isLoading={isLoading}
         withPagination
+        page={page}
+        totalPages={totalPages}
+        onChangePage={handlePageChange}
       />
     </TableWrap>
   );

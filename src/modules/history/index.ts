@@ -62,8 +62,96 @@ export const fetchHistory = (): AppThunk => async dispatch => {
 export const historySelector = createSelector(
   (state: RootState) => state.history.ids,
   (state: RootState) => state.history.byId,
-  (ids, byId) => {
-    return ids.map(id => byId[id]);
+  (ids, byId: {[key: string]: IHistoryRecord}) => {
+    const sortedDeals = ids.map(id => byId[id]).sort((prevDeal, nextDeal) => {
+      const prevDealDate = new Date(prevDeal.finishDate as string);
+      const nextDealDate = new Date(nextDeal.finishDate as string);
+
+      return nextDealDate.getTime() - prevDealDate.getTime();
+    });
+
+    let page = 1;
+
+    const pagesObject = sortedDeals.reduce<{
+      [key: string]: {
+        deals?: IHistoryRecord[],
+        lossDealsCounter?: number,
+        richProfitDealsCounter?: number,
+        assetDuplicatesCounter?: { [key: string]: number },
+      },
+    }>((resultContainer, deal) => {
+      let prevPageData = resultContainer[page] || {
+        lossDealsCounter: 0,
+        richProfitDealsCounter: 0,
+        assetDuplicatesCounter: {},
+        deals: [],
+      };
+      // reset counters for each ten
+      const dealsLength = (prevPageData?.deals ?? []).length;
+      if (`${dealsLength}`.includes('0') && dealsLength) {
+        page += 1;
+        resultContainer = {
+          ...resultContainer,
+          [page]: {
+            lossDealsCounter: 0,
+            richProfitDealsCounter: 0,
+            assetDuplicatesCounter: {},
+            deals: [],
+          }
+        };
+
+        prevPageData = resultContainer[page];
+      }
+
+      const profit = parseFloat(`${deal.profit}`);
+      const isNegativeProfit = profit < 0;
+      const isRichProfit = profit > 100;
+
+      // prevents adding excessive loss deals
+      if (prevPageData.lossDealsCounter === 2 && isNegativeProfit) return resultContainer;
+      // prevents insufficient rich deals number
+      if (
+        `${dealsLength}`.includes('9') &&
+        (prevPageData?.richProfitDealsCounter ?? 0) <= 2 &&
+        !isRichProfit
+      ) return resultContainer;
+      // prevents adding more than two assets duplicates
+      if ((prevPageData?.assetDuplicatesCounter?.[deal.asset] ?? 0) > 1) return resultContainer;
+
+      const processedPageData = {
+        ...prevPageData,
+        lossDealsCounter: isNegativeProfit
+          ? (prevPageData?.lossDealsCounter ?? 0) + 1
+          : (prevPageData?.lossDealsCounter ?? 0),
+        richProfitDealsCounter: isRichProfit
+          ? (prevPageData?.richProfitDealsCounter ?? 0) + 1
+          : (prevPageData?.richProfitDealsCounter ?? 0),
+        assetDuplicatesCounter: {
+          ...prevPageData?.assetDuplicatesCounter,
+          [deal.asset] : (prevPageData?.assetDuplicatesCounter?.[deal.asset] ?? 0) + 1,
+        }
+      };
+      processedPageData.deals?.push(deal);
+
+      return {
+        ...resultContainer,
+        [page]: processedPageData
+      };
+    }, {
+      1: {
+        lossDealsCounter: 0,
+        richProfitDealsCounter: 0,
+        assetDuplicatesCounter: {},
+        deals: [],
+      },
+    });
+
+    const pagesMap = new Map(Object.entries(pagesObject).map(([key, value]) => [parseInt(key, 10), value.deals]));
+
+    return {
+      pagesMap: pagesMap,
+      totalPages: pagesMap.size
+    };
   },
 );
 

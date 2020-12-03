@@ -64,7 +64,6 @@ const Login: FC = () => {
     const isValidForm = validateValues();
     if (!isValidForm) return;
 
-    console.log(formValues);
     dispatch(authorize(formValues as ILoginInput));
   }, [dispatch, formValues, validateValues]);
 

@@ -19,6 +19,9 @@ const Table = <RecordType extends IRecord>({
   rowKey,
   isLoading,
   withPagination,
+  page,
+  totalPages,
+  onChangePage,
   ...rest
 }: ITableProps<RecordType>): ReactElement<ITableProps<RecordType>> => {
   const headerCells = useMemo(() => columns.map((column, index) => (
@@ -66,7 +69,11 @@ const Table = <RecordType extends IRecord>({
         </StyledBody>
       </StyledTable>
       {withPagination && (
-        <Pagination page={1} totalPages={10} onChangePage={(page) => console.log(page)} />
+        <Pagination
+          page={page ?? 1}
+          totalPages={totalPages ?? 1}
+          onChangePage={onChangePage}
+        />
       )}
     </Root>
   );
