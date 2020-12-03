@@ -4,6 +4,7 @@ import { Switch, useHistory, Route, Redirect } from 'react-router-dom';
 import {RootState} from '../../config/store';
 import Converter from '../Converter';
 import QuotesList from '../QuotesList';
+import History from '../History';
 import {tabs} from './config';
 import {StyledNavTabs} from './styled.index';
 
@@ -22,6 +23,7 @@ const Main: FC = () => {
       <Switch>
         <Route path="/quotes" component={QuotesList} />
         <Route path="/converter" component={Converter} />
+        <Route path="/history" component={History} />
         <Redirect exact path="/" to="/quotes" />
       </Switch>
     </StyledNavTabs>

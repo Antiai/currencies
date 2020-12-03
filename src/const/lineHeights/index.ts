@@ -18,7 +18,7 @@ const MOBILE_LINE_HEIGHTS: ILineHeights = {
   button: '21.79px',
   label: '19.07px',
   input: '21.79px',
-  tableCell: '24.51px',
+  tableCell: '19.07px',
   tab: '19.07px',
   tableHeadCell: '19.07px',
   common: '21.79px',

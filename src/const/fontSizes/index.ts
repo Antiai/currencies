@@ -18,7 +18,7 @@ const MOBILE_FONT_SIZES: IFontSizes = {
   button: '16px',
   label: '14px',
   input: '16px',
-  tableCell: '16px',
+  tableCell: '14px',
   tab: '14px',
   tableHeadCell: '14px',
   common: '16px',
