@@ -1,5 +1,6 @@
 import {IColumnType} from '../../components/Table/types';
 import {IHistoryRecord} from '../../modules/history/types';
+import {formatDate} from '../../utils';
 
 export const columns: IColumnType<IHistoryRecord>[] = [
   {
@@ -10,7 +11,8 @@ export const columns: IColumnType<IHistoryRecord>[] = [
   {
     title: 'Начало',
     dataIndex: 'startDate',
-    width: '16.6%',
+    width: '18%',
+    render: (value) => formatDate(value as string, {includeTime: true}),
   },
   {
     title: 'Котировка',
@@ -20,7 +22,8 @@ export const columns: IColumnType<IHistoryRecord>[] = [
   {
     title: 'Конец',
     dataIndex: 'finishDate',
-    width: '16.6%',
+    width: '18%',
+    render: (value) => formatDate(value as string, {includeTime: true}),
   },
   {
     title: 'Котировка',

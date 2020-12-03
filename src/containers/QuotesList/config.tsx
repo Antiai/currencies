@@ -2,10 +2,12 @@ import React from 'react';
 import {IColumnType} from '../../components/Table/types';
 import {StarIcon} from '../../icons';
 import {IQuote} from '../../modules/quotesList/types';
+import {formatDate} from '../../utils';
 import {IconButton} from './styled.index';
 
 export const getColumns: (handleClick: (event: MouseEvent) => void) => IColumnType<IQuote>[] = (handleClick) => [
   {
+    title: ' ',
     dataIndex: 'isFavorite',
     width: '80px',
     render: (value, rowData) => (
@@ -33,5 +35,6 @@ export const getColumns: (handleClick: (event: MouseEvent) => void) => IColumnTy
     title: 'Дата получения',
     dataIndex: 'startDate',
     width: '33%',
+    render: (value) => formatDate(value as string),
   }
 ];

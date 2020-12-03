@@ -44,6 +44,16 @@ export const Root = styled.div`
 
 export const StyledForm = styled.form<IStyledTheme>`
   font: ${({theme}) => theme.typography.fonts.desktop.input};
+  
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  input {
+    -moz-appearance: textfield;
+  }
 `;
 
 export const StyledInput = styled.input<IStyledTheme>`
