@@ -1,6 +1,6 @@
 import {Row} from 'styled-bootstrap-grid';
 import styled from 'styled-components';
-import {Button, FormField} from '../../components';
+import {Button, FormField, Select} from '../../components';
 import {IStyledTheme} from '../../components/GlobalStyle/types';
 
 export const Title = styled.div<IStyledTheme>`
@@ -33,6 +33,7 @@ export const StyledForm = styled.form`
 export const StyledFormField = styled(FormField)`
   max-width: 80px;
   margin-bottom: 0;
+  margin-right: 20px;
   
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
@@ -47,7 +48,14 @@ export const StyledFormField = styled(FormField)`
 
 export const StyledButton = styled(Button)`
   max-width: 150px;
-  margin-left: 20px;
+  margin-left: 15px;
+`;
+
+export const ResultContainer = styled.div<IStyledTheme>`
+  margin-right: 10px;
+  margin-left: 10px;
+  height: 100%;
+  border-top: 1px solid ${({theme}) => theme.palette.gainsboro};
 `;
 
 export const ResultWrap = styled.div`
@@ -69,4 +77,9 @@ export const ResultValue = styled.div<IStyledTheme>`
   font-weight: ${({theme}) => theme.typography.fontWeights.normal};
   line-height: 27.24px;
   color: ${({theme}) => theme.palette.black};
+`;
+
+export const StyledSelect = styled(Select)`
+  max-width: 80px;
+  margin-right: 5px;
 `;

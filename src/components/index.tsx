@@ -4,3 +4,5 @@ export {default as Input} from './Input';
 export {default as Layout} from './Layout';
 export {default as NavTabs} from './NavTabs';
 export {default as Table} from './Table';
+export {default as Select} from './Select';
+export {default as SelectField} from './SelectField';

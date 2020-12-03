@@ -86,4 +86,26 @@ export const quotesListSelector = createSelector(
   }
 );
 
+export const exchangeRatesSelector = createSelector(
+  (state: RootState) => state.quotesList.ids,
+  (state: RootState) => state.quotesList.byId,
+  (ids, byId) => {
+    const fullCurrenciesList = ids.reduce<string[]>((rawList, id) => [...rawList, ...id.split('/')], []);
+    const processedList = new Set(fullCurrenciesList);
+
+    const directRatesMap = new Map(ids.map(id => [id, parseFloat(byId[id].quote as string)]));
+    const reversedRatesMap = new Map(ids.map(id => [
+      id.split('/').reverse().join('/'),
+      1 / parseFloat(byId[id].quote as string)
+    ]));
+
+
+    return {
+      fullCurrenciesList: Array.from(processedList),
+      directRatesMap,
+      reversedRatesMap,
+    };
+  }
+);
+
 export default quotesListSlice.reducer;
