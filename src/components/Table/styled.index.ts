@@ -18,7 +18,7 @@ export const StyledHead = styled.thead`
   tr {
     display: flex;
     justify-content: stretch;
-    align-items: center;
+    align-items: stretch;
   }
 `;
 

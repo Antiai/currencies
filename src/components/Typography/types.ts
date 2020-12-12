@@ -1,10 +1,10 @@
-import { IFontFamilies } from '../../const/fontFamilies/types';
-import { IFontsOutput } from '../../const/fonts/types';
-import { IFontSizesOutput } from '../../const/fontSizes/types';
-import { IFontStyles } from '../../const/fontStyles/types';
-import { IFontWeights } from '../../const/fontWeights/types';
-import { ILineHeightOutput } from '../../const/lineHeights/types';
-import { ITypographyVariants } from '../../const/typographyVariants/types';
+import { IFontFamilies } from '../../common/const/fontFamilies/types';
+import { IFontsOutput } from '../../common/const/fonts/types';
+import { IFontSizesOutput } from '../../common/const/fontSizes/types';
+import { IFontStyles } from '../../common/const/fontStyles/types';
+import { IFontWeights } from '../../common/const/fontWeights/types';
+import { ILineHeightOutput } from '../../common/const/lineHeights/types';
+import { ITypographyVariants } from '../../common/const/typographyVariants/types';
 
 export interface ITypography {
   fonts: IFontsOutput;

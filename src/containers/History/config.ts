@@ -17,7 +17,7 @@ export const columns: IColumnType<IHistoryRecord>[] = [
   {
     title: 'Котировка',
     dataIndex: 'startQuote',
-    width: '16.6%',
+    width: '15.3%',
   },
   {
     title: 'Конец',
@@ -28,11 +28,11 @@ export const columns: IColumnType<IHistoryRecord>[] = [
   {
     title: 'Котировка',
     dataIndex: 'finishQuote',
-    width: '16.6%',
+    width: '15.3%',
   },
   {
     title: 'Прибыль',
     dataIndex: 'profit',
-    width: '16.6%',
+    width: '15.3%',
   },
 ];

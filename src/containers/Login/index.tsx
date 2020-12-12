@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FC, FormEvent, useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import {ResponseStateEnum} from '../../common/types/api';
 import {Button} from '../../components';
 import {RootState} from '../../config/store';
 import {authorize} from '../../modules/auth';
@@ -31,7 +32,7 @@ const Login: FC = () => {
   }, [errors, setHasErrors]);
 
   useEffect(() => {
-    if (userToken !== 'ok') return;
+    if (userToken !== ResponseStateEnum.OK) return;
 
     history.replace('/');
   }, [history, userToken]);

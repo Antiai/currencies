@@ -64,7 +64,7 @@ export const Container = styled.div<IStyledTheme>`
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   overflow-y: hidden;
-  overflow-x: scroll;
+  overflow-x: auto;
 
   ${media.md`
     min-width: 750px;

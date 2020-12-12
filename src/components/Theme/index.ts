@@ -1,6 +1,6 @@
 import { ITheme } from './types';
 
-import { SPACINGS } from '../../const';
+import { SPACINGS } from '../../common/const';
 import { createGrid } from '../Grid';
 import { basePalette } from '../Palette';
 import typography from '../Typography';

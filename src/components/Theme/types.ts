@@ -1,6 +1,6 @@
 import { DefaultTheme } from 'styled-components';
 
-import { ISpacings } from '../../const/spacings/types';
+import { ISpacings } from '../../common/const/spacings/types';
 import { IGridOutput } from '../Grid/types';
 import { PaletteType } from '../Palette/types';
 import { ITypography } from '../Typography/types';
