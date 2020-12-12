@@ -3,7 +3,7 @@ export enum ResponseStateEnum {
   ERROR = 'error',
 }
 
-export interface ResponseBase {
+export interface IResponseBase {
   result: ResponseStateEnum;
   error: string;
 }

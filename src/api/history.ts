@@ -1,8 +1,8 @@
-import {ResponseBase} from '../common/types/api';
+import {IResponseBase} from '../common/types/api';
 import {IHistoryRecord} from '../modules/history/types';
 import {api} from '../utils';
 
-const getHistory = async (): Promise<ResponseBase & {
+const getHistory = async (): Promise<IResponseBase & {
   deals: IHistoryRecord[],
 }> =>
   api.performRequest({}, 'history');
