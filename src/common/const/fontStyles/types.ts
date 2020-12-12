@@ -1,4 +1,4 @@
-import FONT_STYLES from './index';
+import FONT_STYLES from '.';
 
 export type IFontStyles = typeof FONT_STYLES;
 

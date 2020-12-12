@@ -1,4 +1,4 @@
-import FONT_WEIGHTS from './index';
+import FONT_WEIGHTS from '.';
 
 export type IFontWeights = typeof FONT_WEIGHTS;
 

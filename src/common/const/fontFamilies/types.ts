@@ -1,4 +1,4 @@
-import FONT_FAMILIES from './index';
+import FONT_FAMILIES from '.';
 
 export type IFontFamilies = typeof FONT_FAMILIES;
 
