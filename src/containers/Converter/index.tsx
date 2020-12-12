@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Col} from 'styled-bootstrap-grid';
 import {RootState} from '../../config/store';
 import {exchangeRatesSelector, fetchQuotesList} from '../../modules/quotesList';
+import {stringUtils} from '../../utils';
 import {
   Container,
   ResultContainer,
@@ -97,7 +98,7 @@ const Converter: FC = () => {
 
   const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const rangeKey = [formValues.firstCurrency, formValues.secondCurrency].join('/');
+    const rangeKey = stringUtils.joinValues([formValues.firstCurrency, formValues.secondCurrency]);
     const directExchangeRate = directRatesMap.get(rangeKey);
     const reversedExchangeRate = reversedRatesMap.get(rangeKey);
     const result = formValues.amount as number * (directExchangeRate ?? reversedExchangeRate ?? 0);

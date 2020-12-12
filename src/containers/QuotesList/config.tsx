@@ -5,11 +5,14 @@ import {IQuote} from '../../modules/quotesList/types';
 import {formatDate} from '../../utils';
 import {IconButton} from './styled.index';
 
+const favoriteColumnWidth = '80px';
+const columnWidth = `calc((100% - ${favoriteColumnWidth})/3)`;
+
 export const getColumns: (handleClick: (event: MouseEvent) => void) => IColumnType<IQuote>[] = (handleClick) => [
   {
     title: ' ',
     dataIndex: 'isFavorite',
-    width: '80px',
+    width: favoriteColumnWidth,
     render: (value, rowData) => (
       <IconButton
         isFavorite={value}
@@ -24,17 +27,17 @@ export const getColumns: (handleClick: (event: MouseEvent) => void) => IColumnTy
   {
     title: 'Валютная пара',
     dataIndex: 'asset',
-    width: '33%',
+    width: columnWidth,
   },
   {
     title: 'Котировка',
     dataIndex: 'quote',
-    width: '33%',
+    width: columnWidth,
   },
   {
     title: 'Дата получения',
     dataIndex: 'startDate',
-    width: '33%',
+    width: columnWidth,
     render: (value) => formatDate(value as string),
   }
 ];

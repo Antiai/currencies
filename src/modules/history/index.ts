@@ -20,7 +20,7 @@ export const historySlice = createSlice({
     getHistorySuccess: (state: IHistoryState, action: PayloadAction<IHistoryRecord[]>) => {
       state.errors = initialState.errors;
 
-      const processedDeals =  action.payload.map(deal => {
+      const processedDeals = action.payload.map(deal => {
         const id = [deal.asset, deal.startDate, deal.finishDate].join('-');
 
         return {
@@ -59,11 +59,25 @@ export const fetchHistory = (): AppThunk => async dispatch => {
   dispatch(stopLoading());
 };
 
+const initialHistoryPageData = {
+  lossDealsCounter: 0,
+  richProfitDealsCounter: 0,
+  assetDuplicatesCounter: {},
+  deals: [],
+};
+
+// history settings
+const pageSize = 10;
+const maxLossDeals = 2;
+const minRichDealsOnPage = 1;
+const minRichProfit = 100;
+const maxAssetDuplicates = 2;
+
 export const historySelector = createSelector(
   (state: RootState) => state.history.ids,
   (state: RootState) => state.history.byId,
-  (ids, byId: {[key: string]: IHistoryRecord}) => {
-    const sortedDeals = ids.map(id => byId[id]).sort((prevDeal, nextDeal) => {
+  (ids, byId: { [key: string]: IHistoryRecord }) => {
+    const sortedByDateDeals = ids.map(id => byId[id]).sort((prevDeal, nextDeal) => {
       const prevDealDate = new Date(prevDeal.finishDate as string);
       const nextDealDate = new Date(nextDeal.finishDate as string);
 
@@ -72,85 +86,72 @@ export const historySelector = createSelector(
 
     let page = 1;
 
-    const pagesObject = sortedDeals.reduce<{
+    const pagesContainer = sortedByDateDeals.reduce<{
       [key: string]: {
         deals?: IHistoryRecord[],
         lossDealsCounter?: number,
         richProfitDealsCounter?: number,
         assetDuplicatesCounter?: { [key: string]: number },
       },
-    }>((resultContainer, deal) => {
-      let prevPageData = resultContainer[page] || {
-        lossDealsCounter: 0,
-        richProfitDealsCounter: 0,
-        assetDuplicatesCounter: {},
-        deals: [],
-      };
-      // reset counters for each ten
-      const dealsLength = (prevPageData?.deals ?? []).length;
-      if (`${dealsLength}`.includes('0') && dealsLength) {
-        page += 1;
-        resultContainer = {
-          ...resultContainer,
-          [page]: {
-            lossDealsCounter: 0,
-            richProfitDealsCounter: 0,
-            assetDuplicatesCounter: {},
-            deals: [],
-          }
-        };
+    }>((resultContainer, deal, index) => {
+      let dealsLength = (resultContainer?.[page]?.deals || []).length;
 
-        prevPageData = resultContainer[page];
-      }
+      // creates a new page after reaching ten items on a page
+      if (dealsLength === pageSize) page += 1;
 
+      const currentPage = resultContainer[page] || initialHistoryPageData;
+
+      dealsLength = (currentPage?.deals ?? []).length;
+
+      let isSkippedDeal = false;
       const profit = parseFloat(`${deal.profit}`);
       const isNegativeProfit = profit < 0;
-      const isRichProfit = profit > 100;
+      const isRichProfit = profit >= minRichProfit;
+      const isEnoughNumberOfRichDeals = currentPage?.richProfitDealsCounter as number >= minRichDealsOnPage;
+      const isAlmostCompletedPage = dealsLength === pageSize - 1;
 
-      // prevents adding excessive loss deals
-      if (prevPageData.lossDealsCounter === 2 && isNegativeProfit) return resultContainer;
-      // prevents insufficient rich deals number
-      if (
-        `${dealsLength}`.includes('9') &&
-        (prevPageData?.richProfitDealsCounter ?? 0) <= 2 &&
-        !isRichProfit
-      ) return resultContainer;
-      // prevents adding more than two assets duplicates
-      if ((prevPageData?.assetDuplicatesCounter?.[deal.asset] ?? 0) > 1) return resultContainer;
+      const maxLossDealsIsReached = currentPage.lossDealsCounter === maxLossDeals && isNegativeProfit;
+      const minRichProfitDealsIsNotReached = isAlmostCompletedPage && !isEnoughNumberOfRichDeals && !isRichProfit;
+      const maxAssetDuplicatesIsReached =
+        (currentPage?.assetDuplicatesCounter?.[deal.asset] ?? 0) >= maxAssetDuplicates;
 
-      const processedPageData = {
-        ...prevPageData,
-        lossDealsCounter: isNegativeProfit
-          ? (prevPageData?.lossDealsCounter ?? 0) + 1
-          : (prevPageData?.lossDealsCounter ?? 0),
-        richProfitDealsCounter: isRichProfit
-          ? (prevPageData?.richProfitDealsCounter ?? 0) + 1
-          : (prevPageData?.richProfitDealsCounter ?? 0),
-        assetDuplicatesCounter: {
-          ...prevPageData?.assetDuplicatesCounter,
-          [deal.asset] : (prevPageData?.assetDuplicatesCounter?.[deal.asset] ?? 0) + 1,
-        }
-      };
-      processedPageData.deals?.push(deal);
+      if (maxLossDealsIsReached || minRichProfitDealsIsNotReached || maxAssetDuplicatesIsReached) isSkippedDeal = true;
 
-      return {
+      // removes page with number of items less than page size
+      if (index === (sortedByDateDeals.length - 1) && dealsLength < pageSize) {
+        delete resultContainer[page];
+
+        return resultContainer;
+      }
+
+      return isSkippedDeal
+        ? resultContainer
+        : {
         ...resultContainer,
-        [page]: processedPageData
+        [page]: {
+          ...currentPage,
+          lossDealsCounter: isNegativeProfit
+            ? (currentPage?.lossDealsCounter ?? 0) + 1
+            : (currentPage?.lossDealsCounter ?? 0),
+          richProfitDealsCounter: isRichProfit
+            ? (currentPage?.richProfitDealsCounter ?? 0) + 1
+            : (currentPage?.richProfitDealsCounter ?? 0),
+          assetDuplicatesCounter: {
+            ...currentPage?.assetDuplicatesCounter,
+            [deal.asset]: (currentPage?.assetDuplicatesCounter?.[deal.asset] ?? 0) + 1,
+          },
+          deals: [...(currentPage?.deals ?? []), deal],
+        },
       };
     }, {
-      1: {
-        lossDealsCounter: 0,
-        richProfitDealsCounter: 0,
-        assetDuplicatesCounter: {},
-        deals: [],
-      },
+      1: initialHistoryPageData,
     });
 
-    const pagesMap = new Map(Object.entries(pagesObject).map(([key, value]) => [parseInt(key, 10), value.deals]));
+    const pagesMap = new Map(Object.entries(pagesContainer).map(([key, value]) => [parseInt(key, 10), value.deals]));
 
     return {
       pagesMap: pagesMap,
-      totalPages: pagesMap.size
+      totalPages: pagesMap.size,
     };
   },
 );

@@ -8,7 +8,7 @@ import {
   LINE_HEIGHTS,
   TYPOGRAPHY_VARIANTS,
   FONT_STYLES
-} from '../../const';
+} from '../../common/const';
 
 const typography: ITypography = {
   fonts: FONTS,

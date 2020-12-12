@@ -1,13 +1,16 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {quotesListApi} from '../../api';
 import {AppThunk, RootState} from '../../config/store';
+import {storage, stringUtils} from '../../utils';
 import {stopLoading, startLoading} from '../loading';
 import {IQuote, IQuotesListState} from './types';
+
+const localStorageKey = 'favoriteIds';
 
 const initialState: IQuotesListState = {
   ids: [],
   byId: {},
-  favoriteIds: JSON.parse(localStorage.getItem('favoriteIds') as string) ?? [],
+  favoriteIds: storage.getItem<string[]>(localStorageKey, []),
   errors: '',
 };
 
@@ -30,16 +33,16 @@ export const quotesListSlice = createSlice({
     addToFavorites: (state: IQuotesListState, action: PayloadAction<string>) => {
       if (!action.payload) return;
 
-      state.favoriteIds.unshift(action.payload);
+      storage.setItem(localStorageKey, state.favoriteIds);
 
-      localStorage.setItem('favoriteIds', JSON.stringify(state.favoriteIds));
+      state.favoriteIds.unshift(action.payload);
     },
     removeFromFavorites: (state: IQuotesListState, action: PayloadAction<string>) => {
       if (!action.payload) return;
 
       const filteredFavoriteIds = state.favoriteIds.filter(id => id !== action.payload);
 
-      localStorage.setItem('favoriteIds', JSON.stringify(filteredFavoriteIds));
+      storage.setItem(localStorageKey, filteredFavoriteIds);
 
       state.favoriteIds = filteredFavoriteIds;
     }
@@ -90,15 +93,20 @@ export const exchangeRatesSelector = createSelector(
   (state: RootState) => state.quotesList.ids,
   (state: RootState) => state.quotesList.byId,
   (ids, byId) => {
-    const fullCurrenciesList = ids.reduce<string[]>((rawList, id) => [...rawList, ...id.split('/')], []);
+    const fullCurrenciesList = ids.reduce<string[]>((rawList, id) => [...rawList, ...stringUtils.split(id)], []);
     const processedList = new Set(fullCurrenciesList);
 
-    const directRatesMap = new Map(ids.map(id => [id, parseFloat(byId[id].quote as string)]));
-    const reversedRatesMap = new Map(ids.map(id => [
-      id.split('/').reverse().join('/'),
-      1 / parseFloat(byId[id].quote as string)
-    ]));
+    const {directRatesMap, reversedRatesMap} = ids.reduce((rateMaps, id) => {
+      const quote = parseFloat(byId[id].quote as string);
 
+      rateMaps.directRatesMap.set(id, quote);
+      rateMaps.reversedRatesMap.set(stringUtils.reverse(id), 1 / quote);
+
+      return rateMaps;
+    }, {
+      directRatesMap: new Map(),
+      reversedRatesMap: new Map()
+    });
 
     return {
       fullCurrenciesList: Array.from(processedList),
